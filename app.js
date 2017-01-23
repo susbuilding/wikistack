@@ -4,6 +4,7 @@ const nunjucks = require('nunjucks');
 const makesRouter = require('./routes');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const models = require('./models');
 
 var app = express();
 
@@ -17,6 +18,14 @@ app.get('/', function(req, res, next) {
 
 // app.use(makesRouter());
 
-app.listen(3000, function() {
-	console.log('Server listening...');
+models.User.sync({})
+	.then(function(){
+		return models.Page.sync({})
+	})
+	.then(function() {
+		app.listen(3000, function(){
+			console.log('Server listening...');
+		})
+	})
+	.catch(console.error);
 })
