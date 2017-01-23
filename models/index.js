@@ -3,7 +3,7 @@ var db = new Sequelize('postgres://localhost:5432/wikistack', {
     logging: false
 });
 
-var User = sequelize.define('user', {
+var User = db.define('user', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -16,7 +16,7 @@ var User = sequelize.define('user', {
 
 });
 
-var Page = sequelize.define('page', {
+var Page = db.define('page', {
     title: {
         type: Sequelize.STRING,
         allowNull: false
