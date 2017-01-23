@@ -7,10 +7,10 @@ var User = models.User;
 module.exports = router;
 
 
-// router.get('/', function(req, res, next) {
-//     res.render('index', {title: 'wikistack'});
-//     res.redirect('/');
-// });
+router.get('/', function(req, res, next) {
+    // res.render('index', {title: 'wikistack'});
+    res.redirect('/');
+});
 
 router.post('/', function(req, res, next) {
 
@@ -19,8 +19,13 @@ router.post('/', function(req, res, next) {
     content: req.body.content
     });
 
-    page.save();
-    res.redirect('/');
+    page.save()
+    .then(function () {
+        res.json(page);
+    })
+    .catch(function (err) {
+        console.error(err.message);
+    });
 });
 
 router.get('/add', function(req, res, next) {

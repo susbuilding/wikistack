@@ -15,15 +15,17 @@ app.engine('html', nunjucks.render);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/', function(req, res, next) {
-	res.render('index', {title: 'wikistack'});
-})
-
 app.use('/wiki', router);
 
-models.User.sync({})
+app.get('/', function(req, res, next) {
+	res.render('index', {title: 'wikistack'});
+	// res.redirect('/');
+});
+
+
+models.User.sync({force: true})
 	.then(function(){
-		return models.Page.sync({})
+		return models.Page.sync({force: true})
 	})
 	.then(function() {
 		app.listen(3000, function(){

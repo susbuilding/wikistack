@@ -36,11 +36,17 @@ var Page = db.define('page', {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     },
-    route: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        get: function(){
-            return '/wiki/' + this.getDataValue('urlTitle');
+
+}, {
+    hooks: {
+        beforeValidate: function (page) {
+            var newTitle = titleize(page.title);
+            page.urlTitle = newTitle;
+        }
+    },
+    getterMethods: {
+        route: function () {
+                return '/wiki/' + this.getDataValue('urlTitle');
         }
     }
 });
@@ -49,3 +55,13 @@ module.exports = {
     Page: Page,
     User: User
 }
+
+
+
+function titleize (title) {
+    if (title) {
+        return title.replace(/\s+/g, '_').replace(/\W/g, '');
+    } else {
+        return Math.random().toString(36).slice(2, 7);
+    }
+};
