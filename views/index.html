@@ -5,5 +5,12 @@
   <hr>
   <ul class="list-unstyled">
     <!-- PLACEHOLDER LIST OF PAGES -->
+    <!-- I added Nunjucks for..in loop below -->
+    <ul>
+      {% for page in pages %}
+        <li><a href="{{page.route}}">PLACEHOLDER</a></li>
+      {% endfor %}
+    </ul>
+
   </ul>
 {% endblock %}

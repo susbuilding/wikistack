@@ -25,11 +25,11 @@ app.get('/', function(req, res, next) {
 
 models.User.sync({force: true})
 	.then(function(){
-		return models.Page.sync({force: true})
+		return models.Page.sync({})
 	})
 	.then(function() {
 		app.listen(3000, function(){
-			console.log('Server listening...');
+			console.log('Server listening on port 3000');
 		})
 	})
 	.catch(console.error);

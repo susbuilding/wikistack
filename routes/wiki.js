@@ -9,7 +9,15 @@ module.exports = router;
 
 router.get('/', function(req, res, next) {
     // res.render('index', {title: 'wikistack'});
-    res.redirect('/');
+    //res.redirect('/');
+    Page.findAll({})
+        .then(function(pages) {
+            res.render('index', {
+                pages: pages
+            })
+        })
+        .catch(next)
+
 });
 
 router.post('/', function(req, res, next) {
@@ -31,6 +39,21 @@ router.post('/', function(req, res, next) {
 router.get('/add', function(req, res, next) {
     // res.send("retrieve the 'add a page' form");
     res.render('addpage');
+});
+
+router.get('/:urlTitle', function(req, res, next) {
+    Page.findOne({
+        where: {
+            urlTitle: req.params.urlTitle
+        }
+    })
+    .then(function(matchingPage){
+        res.render('wikipage.html',{
+            matchingPage: matchingPage
+        });
+       // res.redirect(page.get('route'));
+    })
+    .catch(next);
 });
 
 

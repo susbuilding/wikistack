@@ -35,8 +35,7 @@ var Page = db.define('page', {
     date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
-    },
-
+    }
 }, {
     hooks: {
         beforeValidate: function (page) {
