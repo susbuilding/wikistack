@@ -23,7 +23,7 @@ app.get('/', function(req, res, next) {
 });
 
 
-models.User.sync({force: true})
+models.User.sync({})
 	.then(function(){
 		return models.Page.sync({})
 	})
