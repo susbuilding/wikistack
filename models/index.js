@@ -50,6 +50,7 @@ var Page = db.define('page', {
     }
 });
 
+//associations
 Page.belongsTo(User, { as: 'author' });
 
 module.exports = {

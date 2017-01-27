@@ -23,9 +23,9 @@ app.get('/', function(req, res, next) {
 });
 
 
-models.User.sync({})
+models.User.sync({force:true})
 	.then(function(){
-		return models.Page.sync({})
+		return models.Page.sync({force:true})
 	})
 	.then(function() {
 		app.listen(3000, function(){

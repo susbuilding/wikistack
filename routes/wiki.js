@@ -31,18 +31,22 @@ router.post('/', function(req, res, next) {
     .then(function(values) {
         var user = values[0];
 
-        var page = Page.build({
-        title: req.body.title,
-        content: req.body.content
-        });
+        var page = Page.build(
+            req.body
+        );
+        //     {
+        // title: req.body.title,
+        // content: req.body.content,
+        // status: req.body.status
+        // }
 
         return page.save()
         .then(function(page) {
            return page.setAuthor(user);
         })
     })
-    .then(function(page) {
-        res.redirect(page.route);
+    .then(function(createdPage) {
+        res.redirect(createdPage.route);
     })
     .catch(next);
 
@@ -72,7 +76,7 @@ router.get('/:urlTitle', function(req, res, next) {
         }
     })
     .then(function(matchingPage){
-        res.render('wikipage.html',{
+        res.render('wikipage', {
             matchingPage: matchingPage
         });
        // res.redirect(page.get('route'));
