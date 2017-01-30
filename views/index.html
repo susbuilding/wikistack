@@ -8,7 +8,7 @@
     <!-- I added Nunjucks for..in loop below -->
     <ul>
       {% for page in pages %}
-        <li><a href="{{page.route}}"> {{page.title}} </a></li>
+        <li><a href="{{ page.route }}"> {{page.title}} </a></li>
       {% endfor %}
     </ul>
 

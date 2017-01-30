@@ -31,15 +31,10 @@ router.post('/', function(req, res, next) {
     .then(function(values) {
         var user = values[0];
 
-        var page = Page.build(
-            req.body
-        );
-        //     {
-        // title: req.body.title,
-        // content: req.body.content,
-        // status: req.body.status
-        // }
-
+        var page = Page.build({
+            title: req.body.title,
+            content: req.body.content
+    });
         return page.save()
         .then(function(page) {
            return page.setAuthor(user);
@@ -49,20 +44,17 @@ router.post('/', function(req, res, next) {
         res.redirect(createdPage.route);
     })
     .catch(next);
-
-    // var page = Page.build({
-    // title: req.body.title,
-    // content: req.body.content
-    // });
-
-    // page.save()
-    // .then(function () {
-    //     res.json(page);
-    // })
-    // .catch(function (err) {
-    //     console.error(err.message);
-    // });
 })
+
+router.get('/search', function(req, res, next) {
+	Page.findByTag(req.query.search)
+	.then(function (pages){
+		res.render('index', {
+        pages: pages
+        });
+	})
+    .catch(next);
+});
 
 router.get('/add', function(req, res, next) {
     // res.send("retrieve the 'add a page' form");
@@ -73,57 +65,22 @@ router.get('/:urlTitle', function(req, res, next) {
     Page.findOne({
         where: {
             urlTitle: req.params.urlTitle
-        }
+        },
+        include: [
+            {model: User, as: 'author'}
+        ]
     })
     .then(function(matchingPage){
+        // page instance will have a .author property
+        // as a filled in user object ({ name, email })
+        if (matchingPage === null) {
+            res.status(404).send();
+        } else {
         res.render('wikipage', {
-            matchingPage: matchingPage
+            page: matchingPage
         });
        // res.redirect(page.get('route'));
+        }
     })
     .catch(next);
 });
-
-
-router.get('/users/', function(req, res, next) {
-    User.findAll({})
-        .then(function(users) {
-            res.render('users', {
-                users: users
-            })
-        })
-        .catch(next)
-});
-
-router.get('/users/:id', function(req, res, next) {
-
-    var userPromise = User.findById(req.params.id);
-    var pagesPromise = Page.findAll({
-         where: {
-             authorId: req.params.id
-         }
-     });
-
-    Promise.all([userPromise, pagesPromise])
-    .then(function(values) {
-        var user = values[0];
-        var pages = values[1];
-        res.render('users', {
-            users: users,
-            pages: pages
-        })
-    })
-    .catch(next)
-});
-
-// router.post('/users/', function(req, res, next) {
-
-// });
-
-// router.put('/users/:id', function(req, res, next) {
-
-// });
-
-// router.delete('/users/:id', function(req, res, next) {
-
-// });

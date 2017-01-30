@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3>User Page</h3>
+  <h3>Pages by {{ user.name }} </h3>
   <hr>
   <ul class="list-unstyled">
     <!-- I added Nunjucks for..in loop below -->
     <ul>
     <ul>
-      {% for user in users %}
-        <li><a href="/users/{{ user.id }}"> {{ user.name }} </a></li>
+      {% for page in pages %}
+        <li><a href="{{ page.route }}"> {{ page.title }} </a></li>
       {% endfor %}
     </ul>
 

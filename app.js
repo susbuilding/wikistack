@@ -4,7 +4,8 @@ const nunjucks = require('nunjucks');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const models = require('./models');
-const router = require('./routes/wiki');
+const wikiRouter = require('./routes/wiki');
+const usersRouter = require('./routes/users');
 const app = express();
 
 
@@ -15,7 +16,8 @@ app.engine('html', nunjucks.render);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use('/wiki', router);
+app.use('/wiki', wikiRouter);
+app.use('/users', usersRouter);
 
 app.get('/', function(req, res, next) {
 	res.render('index', {title: 'wikistack'});
@@ -23,9 +25,9 @@ app.get('/', function(req, res, next) {
 });
 
 
-models.User.sync({force:true})
+models.User.sync({})
 	.then(function(){
-		return models.Page.sync({force:true})
+		return models.Page.sync({})
 	})
 	.then(function() {
 		app.listen(3000, function(){
